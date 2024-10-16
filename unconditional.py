@@ -35,7 +35,7 @@ def main(unused_argv):
   input = noise # x_t
   for t in scheduler.timesteps:
     with torch.no_grad():
-      noisy_residual = model(input, t).sample # epsilon_t
+      noisy_residual = model(input, t).sample # epsilon(x_t, t)
     previous_noisy_sample = scheduler.step(noisy_residual, t, input).prev_sample # x_{t-1}
     input = previous_noisy_sample
   image = (input / 2 + 0.5).clamp(0,1).squeeze()
