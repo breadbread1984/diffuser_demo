@@ -19,7 +19,7 @@ def main(unused_argv):
                       'bedroom': 'google/ddpm-bedroom-256'},
               'ddim':{'celeba': 'fusing/ddim-celeba-hq',
                       'church': 'fusing/ddim-lsun-church',
-                      'bedroom': 'fusing/ddim-lsun-bedroom'}
+                      'bedroom': 'fusing/ddim-lsun-bedroom'}}
   ddpm = DDPMPipeline.from_pretrained(models[FLAGS.model][FLAGS.category]).to(FLAGS.device)
   image = ddpm(num_inference_steps = 25).images[0]
   image.save(FLAGS.output)
