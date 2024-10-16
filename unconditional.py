@@ -32,11 +32,11 @@ def main(unused_argv):
   model = UNet2DModel.from_pretrained(models[FLAGS.model][FLAGS.category]).to(FLAGS.device)
   scheduler.set_timesteps(50)
   noise = torch.randn((1,3,model.config.sample_size,model.config.sample_size)).to(FLAGS.device)
-  input = noise
+  input = noise # x_t
   for t in scheduler.timesteps:
     with torch.no_grad():
-      noisy_residual = model(input, t).sample
-    previous_noisy_sample = scheduler.step(noisy_residual, t, input).prev_sample
+      noisy_residual = model(input, t).sample # epsilon_t
+    previous_noisy_sample = scheduler.step(noisy_residual, t, input).prev_sample # x_{t-1}
     input = previous_noisy_sample
   image = (input / 2 + 0.5).clamp(0,1).squeeze()
   image = torch.round(torch.permute(image, (1,2,0)) * 255).to(torch.uint8).cpu().numpy()[:,:,::-1]
