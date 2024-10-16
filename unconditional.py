@@ -6,9 +6,9 @@ from diffusers import DDPMPipeline
 FLAGS = flags.FLAGS
 
 def add_options():
-  flags.DEFINE_string('model', enum_values = {'cifar10', 'celeba', 'bedroom', 'cat', 'church'}, default = 'celeba', help = 'model to use')
+  flags.DEFINE_enum('model', enum_values = {'cifar10', 'celeba', 'bedroom', 'cat', 'church'}, default = 'celeba', help = 'model to use')
   flags.DEFINE_string('output', default = 'output.png', help = 'path to output image')
-  flags.DEFINE_string('device', default = 'cuda', enum_values = {'cuda', 'cpu'}, help = 'device to use')
+  flags.DEFINE_enum('device', default = 'cuda', enum_values = {'cuda', 'cpu'}, help = 'device to use')
 
 def main(unused_argv):
   models = {'cifar10': 'google/ddpm-cifar10-32',
