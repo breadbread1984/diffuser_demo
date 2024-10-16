@@ -16,7 +16,7 @@ def main(unused_argv):
             'cat': 'google/ddpm-cat-256',
             'church': 'google/ddpm-church-256',
             'bedroom': 'google/ddpm-bedroom-256'}
-  ddpm = DDPMPipeline.from_pretrained(models[FLAGS.model], use_safetensors = True).to(FLAGS.device)
+  ddpm = DDPMPipeline.from_pretrained(models[FLAGS.model]).to(FLAGS.device)
   image = ddpm(num_inference_steps = 25).images[0]
   import pdb; pdb.set_trace()
 
