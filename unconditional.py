@@ -18,7 +18,7 @@ def main(unused_argv):
             'bedroom': 'google/ddpm-bedroom-256'}
   ddpm = DDPMPipeline.from_pretrained(models[FLAGS.model]).to(FLAGS.device)
   image = ddpm(num_inference_steps = 25).images[0]
-  import pdb; pdb.set_trace()
+  image.save(FLAGS.output)
 
 if __name__ == "__main__":
   add_options()
