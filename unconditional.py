@@ -3,7 +3,7 @@
 from absl import flags, app
 import torch
 #from diffusers import DDPMPipeline
-from diffusers import DDPMSchduler, UNet2DModel
+from diffusers import DDPMScheduler, UNet2DModel
 import cv2
 
 FLAGS = flags.FLAGS
