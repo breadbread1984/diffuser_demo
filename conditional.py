@@ -22,7 +22,7 @@ def main(unused_argv):
   vae.to(FLAGS.device)
   text_encoder.to(FLAGS.device)
   unet.to(FLAGS.device)
-  text_input = tokenizer(FLAGS.text, return_tensors = "pt").to(FLAGS.device)
+  text_input = tokenizer(FLAGS.text, padding = 'max_length', max_length = tokenizer.model_max_length, truncate = True, return_tensors = "pt").to(FLAGS.device)
   text_embeddings = text_encoder(**text_input).last_hidden_state
   latents = torch.randn((1, unet.in_channels, 64, 64), device=FLAGS.device)
   scheduler.set_timesteps(50)
