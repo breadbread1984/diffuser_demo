@@ -2,7 +2,7 @@
 
 from absl import flags, app
 import torch
-from diffusers import StableDiffusionPipeline
+from diffusers import AutoPipelineForText2Image
 #from transformers import CLIPTextModel, CLIPTokenizer
 #from diffusers import AutoencoderKL, UNet2DConditionModel, PNDMScheduler
 from PIL import Image
@@ -41,7 +41,7 @@ def main(unused_argv):
   image = (image * 255).round().astype("uint8")[0]
   image = Image.fromarray(image)
   '''
-  pipe = StableDiffusionPipeline.from_pretrained('CompVis/stable-diffusion-v1-4', torch_dtype = torch.float16)
+  pipe = AutoPipelineForText2Image.from_pretrained('stable-diffusion-v1-5/stable-diffusion-v1-5', torch_dtype = torch.float16, variant = "fp16")
   pipe = pipe.to(FLAGS.device)
   with torch.autocast(FLAGS.device):
     image = pipe(FLAGS.text).images[0]
