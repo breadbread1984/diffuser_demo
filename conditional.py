@@ -22,7 +22,24 @@ def main(unused_argv):
   vae.to(FLAGS.device)
   text_encoder.to(FLAGS.device)
   unet.to(FLAGS.device)
-  text_input = tokenizer(FLAGS.text, padding = 'max_length', max_length = tokenizer.model_max_length, truncation = True, return_tensors = "pt")
+  text_input = tokenizer(FLAGS.text, return_tensors = "pt").to(FLAGS.device)
+  text_embeddings = text_encoder(**text_input).last_hidden_state
+  latents = torch.randn((1, unet.in_channels, 64, 64), device=FLAGS.device)
+  scheduler.set_timesteps(50)
+  for t in scheduler.timesteps:
+    # Predict noise
+    with torch.no_grad():
+      noise_pred = unet(latents, t, encoder_hidden_states=text_embeddings).sample
+      # Compute the previous noisy sample x_t -> x_t-1
+      latents = scheduler.step(noise_pred, t, latents).prev_sample
   with torch.no_grad():
-    text_embeddings = text_encoder(text_input.input_ids.to(FLAGS.device))[0]
-  
+    image = vae.decode(latents).sample
+  image = (image / 2 + 0.5).clamp(0, 1)
+  image = image.cpu().permute(0, 2, 3, 1).numpy()
+  image = (image * 255).round().astype("uint8")[0]
+  image = Image.fromarray(image)
+  image.save('output.png')
+
+if __name__ == "__main__":
+  add_option()
+  app.run(main)
