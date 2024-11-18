@@ -3,8 +3,8 @@
 from absl import flags, app
 import torch
 from transformers import CLIPTextModel, CLIPTokenizer
-from diffusers import AutoencoderKL, UNer2DConditionalModel, PNDMScheduler
-import cv2
+from diffusers import AutoencoderKL, UNet2DConditionalModel, PNDMScheduler
+from PIL import Image
 
 FLAGS = flags.FLAGS
 
@@ -38,7 +38,7 @@ def main(unused_argv):
   image = image.cpu().permute(0, 2, 3, 1).numpy()
   image = (image * 255).round().astype("uint8")[0]
   image = Image.fromarray(image)
-  image.save('output.png')
+  image.save(FLAGS.output)
 
 if __name__ == "__main__":
   add_option()
