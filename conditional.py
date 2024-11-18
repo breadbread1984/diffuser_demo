@@ -41,5 +41,5 @@ def main(unused_argv):
   image.save(FLAGS.output)
 
 if __name__ == "__main__":
-  add_option()
+  add_options()
   app.run(main)
