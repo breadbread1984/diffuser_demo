@@ -2,8 +2,9 @@
 
 from absl import flags, app
 import torch
-from transformers import CLIPTextModel, CLIPTokenizer
-from diffusers import AutoencoderKL, UNet2DConditionModel, PNDMScheduler
+from diffusers import StableDiffusionPipeline
+#from transformers import CLIPTextModel, CLIPTokenizer
+#from diffusers import AutoencoderKL, UNet2DConditionModel, PNDMScheduler
 from PIL import Image
 
 FLAGS = flags.FLAGS
@@ -14,6 +15,7 @@ def add_options():
   flags.DEFINE_enum('device', default = 'cuda', enum_values = {'cpu', 'cuda'}, help = 'device to use')
 
 def main(unused_argv):
+  '''
   vae = AutoencoderKL.from_pretrained("CompVis/stable-diffusion-v1-4", subfolder="vae", use_safetensors=True)
   tokenizer = CLIPTokenizer.from_pretrained("CompVis/stable-diffusion-v1-4", subfolder="tokenizer")
   text_encoder = CLIPTextModel.from_pretrained("CompVis/stable-diffusion-v1-4", subfolder="text_encoder", use_safetensors=True)
@@ -38,6 +40,11 @@ def main(unused_argv):
   image = image.cpu().permute(0, 2, 3, 1).numpy()
   image = (image * 255).round().astype("uint8")[0]
   image = Image.fromarray(image)
+  '''
+  pipe = StableDiffusionPipeline.from_pretrained('CompVis.stable-diffusion-v1-4', torch_dtype = torch.float16)
+  pipe = pipe.to(FLAGS.device)
+  with torch.autocast(FLAGS.device):
+    image = pipe(FLAGS.text).images[0]
   image.save(FLAGS.output)
 
 if __name__ == "__main__":
