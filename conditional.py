@@ -3,7 +3,7 @@
 from absl import flags, app
 import torch
 from transformers import CLIPTextModel, CLIPTokenizer
-from diffusers import AutoencoderKL, UNet2DConditionalModel, PNDMScheduler
+from diffusers import AutoencoderKL, UNet2DConditionModel, PNDMScheduler
 from PIL import Image
 
 FLAGS = flags.FLAGS
