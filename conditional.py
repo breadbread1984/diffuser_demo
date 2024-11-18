@@ -41,7 +41,7 @@ def main(unused_argv):
   image = (image * 255).round().astype("uint8")[0]
   image = Image.fromarray(image)
   '''
-  pipe = StableDiffusionPipeline.from_pretrained('CompVis.stable-diffusion-v1-4', torch_dtype = torch.float16)
+  pipe = StableDiffusionPipeline.from_pretrained('CompVis/stable-diffusion-v1-4', torch_dtype = torch.float16)
   pipe = pipe.to(FLAGS.device)
   with torch.autocast(FLAGS.device):
     image = pipe(FLAGS.text).images[0]
